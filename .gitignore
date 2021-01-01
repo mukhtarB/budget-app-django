@@ -131,8 +131,3 @@ dmypy.json
 # Pycharm
 .idea/
 /.idea
-
-*.superuser.txt/
-*/.superuser.txt
-*.superuser.txt
-.superuser.txt
