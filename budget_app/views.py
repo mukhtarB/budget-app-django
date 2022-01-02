@@ -24,5 +24,5 @@ def project_detail(request, project_slug):
 
 class ProjectCreateView(CreateView):
     model = Project
-    template_name = ' budget_app/add-project.html'
+    template_name = 'budget_app/add-project.html'
     fields = ('name', 'budget')
