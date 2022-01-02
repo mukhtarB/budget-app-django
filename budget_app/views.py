@@ -17,6 +17,7 @@ def project_detail(request, project_slug):
     project = get_object_or_404(Project, slug=project_slug)
 
     context = {
-        'project': project
+        'project': project,
+        'expense_list': project.expenses.all()
     }
     return render(request, 'budget_app/project_detail.html', context)
