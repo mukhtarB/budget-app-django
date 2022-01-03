@@ -29,7 +29,7 @@
 
     <section class="section section-expenses">
         <div class="row">
-            <button class="btn waves-effect right">
+            <button data-target="expenseModal" class="btn waves-effect right modal-trigger">
                 <i class="material-icons white-text left">add_circle_outlined</i> Add Expense
             </button>
         </div>
@@ -64,4 +64,35 @@
 
 </div>
 
+<!-- Modal Structure -->
+<div id="expenseModal" class="modal">
+    <div class="modal-content">
+        <h4>Add Expense</h4>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title">
+            
+            <label for="amount">Title</label>
+            <input type="text" name="amount" id="amount">
+
+            <select name="category">
+                {% for category in category_list %}
+                    <option value=""> {{ category.name }} </option>
+                {% endfor %}
+            </select>
+
+            <button class="btn" type="submit">add</button>
+        </form>
+    </div>
+</div>
+
+<!-- materialize docs -->
+<script>
+    var elem = document.querySelector('.modal');
+    var instance = M.Modal.init(elem);
+
+    var elem = document.querySelector('select');
+    var instance = M.FormSelect.init(elem);
+</script>
 {% endblock %}
