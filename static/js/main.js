@@ -29,8 +29,8 @@
 const fetchCategoryArray = () => {
     var categories = []
 
-    document.querySelectorAll('.category').forEach( (e) => {
-        let name = e.querySelector('.name').innerHTML;
+    document.querySelectorAll('.category').forEach( (el) => {
+        let name = el.querySelector('.name').innerHTML;
         if (name == '') return;
 
         categories.push(name);
