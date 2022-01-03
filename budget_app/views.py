@@ -4,7 +4,10 @@ from django.views.generic import CreateView
 from django.http import HttpResponseRedirect
 
 # models
-from .models import Category, Project
+from .models import Category, Expense, Project
+
+# forms
+from .forms import ExpenseForm
 
 # Create your views here.
 
@@ -31,7 +34,21 @@ def project_detail(request, project_slug):
 
     elif request.method == 'POST':
         # process the forms
-        pass
+        form = ExpenseForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            amount = form.cleaned_data['amount']
+            category_name = form.cleaned_data['category']
+
+            category = get_object_or_404(Category, project=project, name=category_name)
+
+            Expense.objects.create(
+                project=project,
+                title=title,
+                amount=amount,
+                category=category,
+            ).save()
+        # pass
 
     return HttpResponseRedirect(project_slug)
 
