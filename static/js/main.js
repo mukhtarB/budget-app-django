@@ -21,4 +21,22 @@
         </li>`
         )
     }
+
+    const fetchCategoryArray = () => {
+        var categories = []
+
+        document.querySelectorAll('.category').forEach( (e) => {
+            let name = e.querySelector('.name').innerHTML;
+            if (name == '') return;
+
+            categories.push(name);
+        })
+
+        return categories
+    }
+
+    const updateCategoryString = () => {
+        let categories = fetchCategoryArray();
+        document.querySelector('input[name="categoryString"]').value = categories.join(',')
+    }
 })()
