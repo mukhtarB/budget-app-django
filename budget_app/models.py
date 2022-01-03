@@ -23,7 +23,7 @@ class Project(models.Model):
         expense_list = Expense.objects.filter(project=self)
         total_expense_amount = 0
         for expense in expense_list:
-            total_expense_amount += expense.amount
+            total_expense_amount += round(expense.amount)
 
         return self.budget - total_expense_amount
 
