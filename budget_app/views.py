@@ -1,7 +1,7 @@
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import CreateView
-
-from django.http import HttpResponseRedirect
+import json
 
 # models
 from .models import Category, Expense, Project
@@ -21,6 +21,7 @@ def project_detail(request, project_slug):
 
     # project = Project.objects.get(slug = project_slug)
     project = get_object_or_404(Project, slug=project_slug)
+    form = ExpenseForm()
 
     if request.method == 'GET':
         category_list = Category.objects.filter(project=project)
@@ -28,27 +29,37 @@ def project_detail(request, project_slug):
         context = {
             'project': project,
             'expense_list': project.expenses.all(),
-            'category_list': category_list
+            'category_list': category_list,
+            'form': form
         }
         return render(request, 'budget_app/project_detail.html', context)
 
     elif request.method == 'POST':
-        # process the forms
+        # process the forms: manually in templates
+
         form = ExpenseForm(request.POST)
+
         if form.is_valid():
             title = form.cleaned_data['title']
             amount = form.cleaned_data['amount']
             category_name = form.cleaned_data['category']
 
-            category = get_object_or_404(Category, project=project, name=category_name)
+            category = get_object_or_404(
+                Category, project=project, name=category_name)
 
             Expense.objects.create(
                 project=project,
                 title=title,
                 amount=amount,
-                category=category,
+                category=category
             ).save()
-        # pass
+
+    elif request.method == 'DELETE':
+        id = json.loads(request.body)['id']
+        expense = get_object_or_404(Expense, id=id)
+        expense.delete()
+
+        return HttpResponse('')
 
     return HttpResponseRedirect(project_slug)
 
@@ -70,5 +81,4 @@ class ProjectCreateView(CreateView):
                 name=category
             ).save()
 
-        # return HttpResponseRedirect(self.get_success_url())
         return super().form_valid(form)
