@@ -2,6 +2,17 @@
 {% load static %}
 {% block content %}
 
+<!-- <style>
+    form > ul > li.category {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: #fff;
+        margin-right: 5px;
+    }
+</style> -->
+
+
+
     <div class="container">
         <form action="" method="POST">
             {% csrf_token %}
@@ -13,20 +24,12 @@
             <input type="hidden" name="categoryString">
 
             <ul id="categoriesContainer">
-                <li class="category">
-                    <span class="name">Design</span>
-                    <span onclick="removeCategory(this)" class="btnRemove bold">Design</span>
-                </li>
-                <li class="category">
-                    <span class="name">Design</span>
-                    <span onclick="removeCategory(this)" class="btnRemove bold">Design</span>
-                </li>
-                <li class="category">
-                    <span class="name">Design</span>
-                    <span onclick="removeCategory(this)" class="btnRemove bold">Design</span>
-                </li>
+               
             </ul>
+            <button class="btn" type="submit">Start Project</button>
         </form>
     </div>
+
+    <script src="{% static 'js/main.js' %}"></script>
 
 {% endblock %}
