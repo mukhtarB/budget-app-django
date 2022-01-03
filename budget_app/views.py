@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import CreateView
 
-# from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect
 
 # models
 from .models import Category, Project
@@ -19,11 +19,21 @@ def project_detail(request, project_slug):
     # project = Project.objects.get(slug = project_slug)
     project = get_object_or_404(Project, slug=project_slug)
 
-    context = {
-        'project': project,
-        'expense_list': project.expenses.all()
-    }
-    return render(request, 'budget_app/project_detail.html', context)
+    if request.method == 'GET':
+        category_list = Category.objects.filter(project=project)
+
+        context = {
+            'project': project,
+            'expense_list': project.expenses.all(),
+            'category_list': category_list
+        }
+        return render(request, 'budget_app/project_detail.html', context)
+
+    elif request.method == 'POST':
+        # process the forms
+        pass
+
+    return HttpResponseRedirect(project_slug)
 
 
 class ProjectCreateView(CreateView):
