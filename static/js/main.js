@@ -1,4 +1,4 @@
-// IIFY
+// IIFE
 (function(){
     document.querySelector('#categoryInput').addEventListener('keydown', function(e){
         if(e.keyCode !== 13){
@@ -13,6 +13,7 @@
         updateCategoryString();
     })
 
+    // add category
     const addNewCategory = (name) => {
         document.querySelector('#categoriesContainer').insertAdjacentHTML('beforeend', 
         `<li class="category">
@@ -21,22 +22,33 @@
         </li>`
         )
     }
-
-    const fetchCategoryArray = () => {
-        var categories = []
-
-        document.querySelectorAll('.category').forEach( (e) => {
-            let name = e.querySelector('.name').innerHTML;
-            if (name == '') return;
-
-            categories.push(name);
-        })
-
-        return categories
-    }
-
-    const updateCategoryString = () => {
-        let categories = fetchCategoryArray();
-        document.querySelector('input[name="categoryString"]').value = categories.join(',')
-    }
 })()
+
+
+// update category
+const fetchCategoryArray = () => {
+    var categories = []
+
+    document.querySelectorAll('.category').forEach( (e) => {
+        let name = e.querySelector('.name').innerHTML;
+        if (name == '') return;
+
+        categories.push(name);
+    })
+
+    return categories;
+}
+
+
+// join updated strings
+const updateCategoryString = () => {
+    let categories = fetchCategoryArray();
+    document.querySelector('input[name="categoryString"]').value = categories.join(',');
+}
+
+
+// remove category
+const removeCategory = (e) => {
+    e.parentElement.remove();
+    updateCategoryString()
+}
