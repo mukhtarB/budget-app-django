@@ -23,9 +23,21 @@ body {
     padding: 0 0.4rem !important;
 }
 
+/* project list (on project) */
 .project-name h5 {
     margin-bottom: 13px;
     margin-top: 0;
+}
+
+.on-project {
+    position: fixed;
+    bottom: 5%;
+    right: 5%;
+}
+@media (min-width: 769px) {
+    .on-project {
+        position: static;
+    }
 }
 
 /* project list (no project) */
