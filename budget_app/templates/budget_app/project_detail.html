@@ -1,6 +1,12 @@
 {% extends 'budget_app/base.html' %}
 {% block content %}
 
+<style>
+    .close-icon:hover {
+        cursor: pointer;
+    }
+</style>
+
 <div class="container">
     <section class="section section-stats">
         <div class="row my-row">
@@ -58,12 +64,18 @@
                         <span class="title bold">{{ expense.category }}</span>
                     </div>
 
-                    <a href="" onclick="deleteExpense(this)" data-id="{{ expense.id }}">
-                        <i class="material-icons red-text right">close</i>
+                    <a class="close-icon" onclick="deleteExpense(this)" data-id="{{ expense.id }}">
+                        <i class="material-icons close-icon red-text right">close</i>
                     </a>
                 </div>
             </div>
         </li>
+        {% empty %}
+            <li>
+                <div class="card-panel z-depth-0 expense">
+                    You have no expenses yet!
+                </div>
+            </li>
         {% endfor %}
 
     </ul>
