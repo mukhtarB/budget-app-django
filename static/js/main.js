@@ -18,7 +18,7 @@
         document.querySelector('#categoriesContainer').insertAdjacentHTML('beforeend', 
         `<li class="category">
             <span class="name">${name}</span>
-            <span onclick="removeCategory(this)" class="btnRemove bold">x</span>
+            <span onclick="removeCategory(this)" class="btnRemove bold close-icon red-text"> x </span>
         </li>`
         )
     }

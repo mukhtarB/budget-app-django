@@ -23,6 +23,10 @@ body {
     padding: 0 0.4rem !important;
 }
 
+.project-name h5 {
+    margin-bottom: 13px;
+}
+
 /* project list (no project) */
 .noproject-wrapper {
     margin-top: 150px;
