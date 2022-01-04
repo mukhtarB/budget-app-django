@@ -5,7 +5,7 @@ from django.shortcuts import reverse
 
 # Create your models here.
 class Project(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=15)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
     budget = models.IntegerField()
 
