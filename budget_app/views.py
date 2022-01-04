@@ -13,7 +13,11 @@ from .forms import ExpenseForm
 
 
 def project_list(request):
-    return render(request, 'budget_app/project_list.html')
+    project_list = Project.objects.all()
+    context = {
+        'project_list': project_list
+    }
+    return render(request, 'budget_app/project_list.html', context)
 
 
 def project_detail(request, project_slug):
