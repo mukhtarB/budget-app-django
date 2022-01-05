@@ -1,13 +1,11 @@
 import json
-from django.http import response
-from django.test import TestCase, Client, client
+from django.test import TestCase, Client
 from django.urls import reverse
 from budget_app.models import (
     Category,
     Expense,
     Project,
 )
-from budget_app.views import project_list
 
 # setup codes
 # test codes
@@ -69,10 +67,15 @@ class TestViews(TestCase):
         self.assertEqual(self.project.expenses.count(), 1)
 
     def test_project_detail_DELETE_deletes_expense(self):
-
         response = self.client.delete(self.detail_url, json.dumps({
             'id': 1
         }))
 
         self.assertEqual(response.status_code, 204)
         self.assertEqual(self.project.expenses.count(), 0)
+
+    def test_project_detail_DELETE_no_id(self):
+        response = self.client.delete(self.detail_url)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(self.project.expenses.count(), 1)
