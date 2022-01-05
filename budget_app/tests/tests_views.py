@@ -38,19 +38,19 @@ class TestViews(TestCase):
 
         return super().setUp()
 
-    def test_project_list_GET(self):
+    def test_project_list_GET(self) -> None:
         response = self.client.get(self.list_url)
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'budget_app/project_list.html')
 
-    def test_project_detail_GET(self):
+    def test_project_detail_GET(self) -> None:
         response = self.client.get(self.detail_url)
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'budget_app/project_detail.html')
 
-    def test_project_detail_POST_add_expense(self):
+    def test_project_detail_POST_add_expense(self) -> None:
         response = self.client.post(self.detail_url, {
             'title': 'expense1',
             'amount': 1000,
@@ -60,13 +60,13 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(self.project.expenses.first().title, 'expense1')
 
-    def test_project_detail_POST_no_data(self):
+    def test_project_detail_POST_no_data(self) -> None:
         response = self.client.post(self.detail_url)
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(self.project.expenses.count(), 1)
 
-    def test_project_detail_DELETE_deletes_expense(self):
+    def test_project_detail_DELETE_deletes_expense(self) -> None:
         response = self.client.delete(self.detail_url, json.dumps({
             'id': 1
         }))
@@ -74,8 +74,27 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 204)
         self.assertEqual(self.project.expenses.count(), 0)
 
-    def test_project_detail_DELETE_no_id(self):
+    def test_project_detail_DELETE_no_id(self) -> None:
         response = self.client.delete(self.detail_url)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(self.project.expenses.count(), 1)
+
+    def test_projectCreateView(self) -> None:
+        add_url = reverse('add')
+        response = self.client.post(add_url, {
+            'name': 'project2',
+            'budget': 15000,
+            'categoryString': 'design,development',
+        })
+
+        project2 = Project.objects.get(id=2)
+        self.assertEqual(project2.name, 'project2')
+
+        first_category = Category.objects.get(id=2)
+        self.assertEqual(first_category.name, 'design')
+        self.assertEqual(first_category.project, project2)
+
+        second_category = Category.objects.get(id=3)
+        self.assertEqual(second_category.name, 'development')
+        self.assertEqual(first_category.project, project2)
