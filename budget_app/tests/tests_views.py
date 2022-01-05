@@ -1,8 +1,10 @@
+import json
 from django.http import response
 from django.test import TestCase, Client, client
 from django.urls import reverse
 from budget_app.models import (
     Category,
+    Expense,
     Project,
 )
 from budget_app.views import project_list
@@ -27,6 +29,13 @@ class TestViews(TestCase):
         self.category = Category.objects.create(
             project=self.project,
             name='development_testing'
+        )
+
+        self.expense = Expense.objects.create(
+            project=self.project,
+            title='deletable expense',
+            amount=700,
+            category=self.category
         )
 
         return super().setUp()
@@ -57,4 +66,13 @@ class TestViews(TestCase):
         response = self.client.post(self.detail_url)
 
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.project.expenses.count(), 1)
+
+    def test_project_detail_DELETE_deletes_expense(self):
+
+        response = self.client.delete(self.detail_url, json.dumps({
+            'id': 1
+        }))
+
+        self.assertEqual(response.status_code, 204)
         self.assertEqual(self.project.expenses.count(), 0)
