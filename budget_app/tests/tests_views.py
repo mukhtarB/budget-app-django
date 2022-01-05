@@ -18,6 +18,7 @@ class TestViews(TestCase):
         self.client = Client()
         self.list_url = reverse('list')
         self.detail_url = reverse('detail', args=['project1'])
+        self.add_url = reverse('add')
 
         self.project = Project.objects.create(
             name='project1',
@@ -80,21 +81,27 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(self.project.expenses.count(), 1)
 
-    def test_projectCreateView(self) -> None:
-        add_url = reverse('add')
-        response = self.client.post(add_url, {
+    def test_projectCreateView_GET(self) -> None:
+        response = self.client.get(self.add_url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'budget_app/add-project.html')
+
+    def test_projectCreateView_POST(self) -> None:
+        self.client.post(self.add_url, {
             'name': 'project2',
             'budget': 15000,
             'categoryString': 'design,development',
         })
 
         project2 = Project.objects.get(id=2)
+        first_category = Category.objects.get(id=2)
+        second_category = Category.objects.get(id=3)
+
         self.assertEqual(project2.name, 'project2')
 
-        first_category = Category.objects.get(id=2)
         self.assertEqual(first_category.name, 'design')
         self.assertEqual(first_category.project, project2)
 
-        second_category = Category.objects.get(id=3)
         self.assertEqual(second_category.name, 'development')
         self.assertEqual(first_category.project, project2)
