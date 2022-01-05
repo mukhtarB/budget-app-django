@@ -50,7 +50,11 @@ class TestViews(TestCase):
             'category': 'development_testing'
         })
 
-        print(self.project.expenses)
-
         self.assertEqual(response.status_code, 302)
         self.assertEqual(self.project.expenses.first().title, 'expense1')
+
+    def test_project_detail_POST_no_data(self):
+        response = self.client.post(self.detail_url)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.project.expenses.count(), 0)
