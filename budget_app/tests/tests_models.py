@@ -38,3 +38,29 @@ class TestModels(TestCase):
         )
 
         self.assertEqual(self.project.budget_left(), 7000)
+
+    def test_project_total_transactions(self) -> None:
+        project2 = Project.objects.create(
+            name='Project2',
+            budget=5000
+        )
+
+        category1 = Category.objects.create(
+            project=project2,
+            name='development'
+        )
+
+        Expense.objects.create(
+            project=self.project,
+            title='expense1',
+            amount=1000,
+            category=category1
+        )
+        Expense.objects.create(
+            project=project2,
+            title='expense2',
+            amount=1000,
+            category=category1
+        )
+
+        self.assertEqual(self.project.total_transactions(), 1)

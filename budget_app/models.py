@@ -30,6 +30,7 @@ class Project(models.Model):
     def total_transactions(self):
         expense_list = Expense.objects.filter(project=self)
         return len(expense_list)
+        # return expense_list.count()
 
 
 class Category(models.Model):
