@@ -1,3 +1,4 @@
+from django import forms
 from django.test import SimpleTestCase
 from ..forms import ExpenseForm
 
@@ -12,3 +13,9 @@ class TestForms(SimpleTestCase):
         })
 
         self.assertTrue(form.is_valid())
+
+    def test_expense_form_no_data(self) -> None:
+        form = ExpenseForm(data={})
+
+        self.assertFalse(form.is_valid())
+        self.assertEqual(len(form.errors), 3)
